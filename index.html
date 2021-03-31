@@ -40,21 +40,23 @@
                                 <div id='3' class="button">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div id='delete-one-value' class="button"> < </div>
+                                <div id='delete-one-value' class="button">
+                                    < </div>
                                         <div id='0' class="button">0</div>
-                                        <div id='clear-given-pin' class="button">C</div>    
+                                        <div id='clear-given-pin' class="button">C</div>
                                 </div>
                                 <div>
                                     <button id="submit" type="submit" class="submit-btn">Submit</button>
-                                    <p class="action-left">3 try left</p>
+                                    <p id="pin-match-limition-note" class="action-left"> <span
+                                            id="limit-number">3</span> try left</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="notify-section">
-                    <p id="notify-unsuccess"  class="notify">❌ Pin Didn't Match, Please try again</p>
-                    <p id="notify-success"  class="notify">✅ Pin Matched... Secret door is opening for you</p>
+                    <p id="notify-unsuccess" class="notify">❌ Pin Didn't Match, Please try again</p>
+                    <p id="notify-success" class="notify">✅ Pin Matched... Secret door is opening for you</p>
                 </div>
             </div>
 
@@ -109,19 +111,36 @@
                 document.getElementById('submit').addEventListener('click', function () {
                     let generateInputField = document.getElementById('generate-pin-show');
                     let givenInputField = document.getElementById('given-number-input-field');
+                    if (givenInputField.value.length > 5) {
 
-                    let generateInputFieldNumber = parseInt(generateInputField.value);
-                    let givenInputFieldNumber = parseInt(givenInputField.value);
+                        let generateInputFieldNumber = parseInt(generateInputField.value);
+                        let givenInputFieldNumber = parseInt(givenInputField.value);
 
-                    if (generateInputFieldNumber == givenInputFieldNumber) {
-                        generateInputField.value = ' ';
-                        givenInputField.value = ' ';
-                        document.getElementById('notify-success').style.display = 'block';
+                        if (generateInputFieldNumber == givenInputFieldNumber) {
+                            generateInputField.value = ' ';
+                            givenInputField.value = ' ';
+                            document.getElementById('notify-success').style.display = 'block';
+                        }
+                        else if (generateInputFieldNumber !== givenInputFieldNumber) {
+                            document.getElementById('pin-match-limition-note').style.display = 'block';
+                            givenInputField.value = ' ';
+                            let tryingNumber = document.getElementById('limit-number');
+                            tryingNumber.innerText = tryingNumber.innerText - '1';
+                            if (tryingNumber.innerText == 0) {
+                                generateInputField.value = ' ';
+                                givenInputField.value = ' ';
+                                document.getElementById('submit').style.display = 'none';
+                                document.getElementById('pin-match-limition-note').innerText = 'Please Try Again Later';
+                            }
+                        }
+                        else {
+                            givenInputField.value = ' ';
+                            document.getElementById('notify-success').style.display = 'none';
+                            document.getElementById('notify-unsuccess').style.display = 'block';
+                        }
                     }
                     else {
-                        givenInputField.value = ' ';
-                        document.getElementById('notify-success').style.display = 'none';
-                        document.getElementById('notify-unsuccess').style.display = 'block';
+                        givenInputField.value = '!'+ ' ' + 'give 4-digit pin';
                     }
                 })
             </script>
