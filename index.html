@@ -64,6 +64,8 @@
                 //Generate Random 4-digit Number
                 let PinGeneratorButton = document.getElementById('pin-generator-button');
                 PinGeneratorButton.addEventListener('click', function () {
+                    document.getElementById('notify-success').style.display = 'none';
+                    document.getElementById('notify-unsuccess').style.display = 'none';
                     let randomNumber = Math.random() * 10000;
                     let randomNumberFigure = Math.round(randomNumber) + ' ';
                     if (5 == randomNumberFigure.length) {
@@ -111,7 +113,7 @@
                 document.getElementById('submit').addEventListener('click', function () {
                     let generateInputField = document.getElementById('generate-pin-show');
                     let givenInputField = document.getElementById('given-number-input-field');
-                    if (givenInputField.value.length > 5) {
+                    if (givenInputField.value.length == 4 ) {
 
                         let generateInputFieldNumber = parseInt(generateInputField.value);
                         let givenInputFieldNumber = parseInt(givenInputField.value);
