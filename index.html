@@ -100,7 +100,7 @@
                 //To clear input Field by press 'C' button
                 document.getElementById('clear-given-pin').addEventListener('click', function () {
                     let givenInputField = document.getElementById('given-number-input-field');
-                    givenInputField.value = '';
+                    givenInputField.value = ' ' ;
                 })
 
                 //deleting one by one value 
@@ -113,11 +113,8 @@
                 document.getElementById('submit').addEventListener('click', function () {
                     let generateInputField = document.getElementById('generate-pin-show');
                     let givenInputField = document.getElementById('given-number-input-field');
-                    if (givenInputField.value.length == 4 ) {
-
                         let generateInputFieldNumber = parseInt(generateInputField.value);
                         let givenInputFieldNumber = parseInt(givenInputField.value);
-
                         if (generateInputFieldNumber == givenInputFieldNumber) {
                             generateInputField.value = ' ';
                             givenInputField.value = ' ';
@@ -127,12 +124,15 @@
                             document.getElementById('pin-match-limition-note').style.display = 'block';
                             givenInputField.value = ' ';
                             let tryingNumber = document.getElementById('limit-number');
-                            tryingNumber.innerText = tryingNumber.innerText - '1';
-                            if (tryingNumber.innerText == 0) {
+                            tryingNumber.innerText = tryingNumber.innerText - 1;
+                            if (tryingNumber.innerText == '0') {
                                 generateInputField.value = ' ';
                                 givenInputField.value = ' ';
                                 document.getElementById('submit').style.display = 'none';
-                                document.getElementById('pin-match-limition-note').innerText = 'Please Try Again Later';
+                                document.getElementById('pin-match-limition-note').innerText = 'Please Reload page';
+                            }
+                            else{
+
                             }
                         }
                         else {
@@ -140,10 +140,6 @@
                             document.getElementById('notify-success').style.display = 'none';
                             document.getElementById('notify-unsuccess').style.display = 'block';
                         }
-                    }
-                    else {
-                        givenInputField.value = '!'+ ' ' + 'give 4-digit pin';
-                    }
                 })
             </script>
 </body>
