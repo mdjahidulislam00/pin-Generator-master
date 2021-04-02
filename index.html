@@ -23,125 +23,124 @@
                 <div class="input-section half-width">
                     <input id="given-number-input-field" class="form-control" type="text">
                     <div class="numbers">
-                        <div class="calc-body">
+                        <div id="calculator-pin-Number" class="calc-body">
                             <div class="calc-button-row">
-                                <div id='7' class="button">7</div>
-                                <div id='8' class="button">8</div>
-                                <div id='9' class="button">9</div>
+                                <div class="button">7</div>
+                                <div class="button">8</div>
+                                <div class="button">9</div>
                             </div>
                             <div class="calc-button-row">
-                                <div id='4' class="button">4</div>
-                                <div id='5' class="button">5</div>
-                                <div id='6' class="button">6</div>
+                                <div class="button">4</div>
+                                <div class="button">5</div>
+                                <div class="button">6</div>
                             </div>
                             <div class="calc-button-row">
-                                <div id='1' class="button">1</div>
-                                <div id='2' class="button">2</div>
-                                <div id='3' class="button">3</div>
+                                <div class="button">1</div>
+                                <div class="button">2</div>
+                                <div class="button">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div id='delete-one-value' class="button">
-                                    < </div>
-                                        <div id='0' class="button">0</div>
-                                        <div id='clear-given-pin' class="button">C</div>
-                                </div>
-                                <div>
-                                    <button id="submit" type="submit" class="submit-btn">Submit</button>
-                                    <p id="pin-match-limition-note" class="action-left"> <span
-                                            id="limit-number">3</span> try left</p>
-                                </div>
+                                <div id='delete-one-value' class="button"> B </div>
+                                <div class="button">0</div>
+                                <div class="button">C</div>
+                            </div>
+                            <div>
+                                <button id="submit" type="submit" class="submit-btn">Submit</button>
+                                <p id="pin-match-limit-note" class="action-left"> <span id="limit-number">3</span>
+                                    try left</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="notify-section">
-                    <p id="notify-unsuccess" class="notify">❌ Pin Didn't Match, Please try again</p>
-                    <p id="notify-success" class="notify">✅ Pin Matched... Secret door is opening for you</p>
-                </div>
             </div>
+            <div class="notify-section">
+                <p id="notify-unsuccess" class="notify">❌ Pin Didn't Match, Please try again</p>
+                <p id="notify-success" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            </div>
+        </div>
 
-            <script>
-                //Generate Random 4-digit Number
-                let PinGeneratorButton = document.getElementById('pin-generator-button');
-                PinGeneratorButton.addEventListener('click', function () {
-                    document.getElementById('notify-success').style.display = 'none';
-                    document.getElementById('notify-unsuccess').style.display = 'none';
-                    let randomNumber = Math.random() * 10000;
-                    let randomNumberFigure = Math.round(randomNumber) + ' ';
-                    if (5 == randomNumberFigure.length) {
-                        let generateInputField = document.getElementById('generate-pin-show');
-                        generateInputField.value = randomNumberFigure;
-                    }
-                    else {
-                        return;
-                    }
-                })
-
-                //calling Number button to show in input Field
-                numberGivenToInputField('0')
-                numberGivenToInputField('1')
-                numberGivenToInputField('2')
-                numberGivenToInputField('3')
-                numberGivenToInputField('4')
-                numberGivenToInputField('5')
-                numberGivenToInputField('6')
-                numberGivenToInputField('7')
-                numberGivenToInputField('8')
-                numberGivenToInputField('9')
-
-                //Number Button to Show in input Field Function
-                function numberGivenToInputField(num) {
-                    let givenInputField = document.getElementById('given-number-input-field');
-                    document.getElementById(num).addEventListener('click', function () {
-                        givenInputField.value = givenInputField.value + num;
-                    })
+        <script>
+            //Generate Random 4-digit Number
+            function getPinByGeneratedButton() {
+                let randomNumber = Math.random() * 10000;
+                let generatePin = (randomNumber + '').split('.')[0];
+                if (generatePin.length === 4) {
+                    return generatePin;
                 }
+                else {
+                    return getPinByGeneratedButton();
+                }
+            }
+            //display generatedPin
+            let pinGeneratorButton = document.getElementById('pin-generator-button');
+            pinGeneratorButton.addEventListener('click', function () {
+                let generateInputField = document.getElementById('generate-pin-show');
+                generateInputField.value = getPinByGeneratedButton();
 
-                //To clear input Field by press 'C' button
-                document.getElementById('clear-given-pin').addEventListener('click', function () {
-                    let givenInputField = document.getElementById('given-number-input-field');
-                    givenInputField.value = ' ' ;
-                })
+                //clear notify note
+                document.getElementById('notify-success').style.display = 'none';
+                document.getElementById('notify-unsuccess').style.display = 'none';
 
-                //deleting one by one value 
-                document.getElementById('delete-one-value').addEventListener('click', function () {
-                    let givenInputField = document.getElementById('given-number-input-field');
-                    givenInputField.value = givenInputField.value.substr(0, givenInputField.value.length - 1);;
-                })
-
-                //Submit button Event
-                document.getElementById('submit').addEventListener('click', function () {
-                    let generateInputField = document.getElementById('generate-pin-show');
-                    let givenInputField = document.getElementById('given-number-input-field');
-                        let generateInputFieldNumber = parseInt(generateInputField.value);
-                        let givenInputFieldNumber = parseInt(givenInputField.value);
-                        if (generateInputFieldNumber == givenInputFieldNumber) {
-                            generateInputField.value = ' ';
-                            givenInputField.value = ' ';
+            })
+            //calling Number button to show in input Field
+            const calculatorNumber = document.getElementById('calculator-pin-Number');
+            calculatorNumber.addEventListener('click', function () {
+                //add bubble method
+                const digit = event.target.innerText;
+                if (isNaN(digit)) {
+                    //cancel input field
+                    if (digit == 'C') {
+                        let givenInputField = document.getElementById('given-number-input-field');
+                        givenInputField.value = ' ';
+                    }
+                    //backspace input field
+                    else if (digit == 'B') {
+                        let givenInputField = document.getElementById('given-number-input-field');
+                        givenInputField.value = givenInputField.value.substr(0, givenInputField.value.length - 1);
+                    }
+                    //button Event
+                    else {
+                        let generateInputPin = document.getElementById('generate-pin-show');
+                        generatePin = generateInputPin.value;
+                        let givenInputPin = document.getElementById('given-number-input-field');
+                        givenPin = givenInputPin.value;
+                        //input field matching
+                        if (generatePin == givenPin) {
                             document.getElementById('notify-success').style.display = 'block';
+                            document.getElementById('notify-unsuccess').style.display = 'none';
+                            generateInputPin.value = ' ';
+                            givenInputPin.value = ' ';
                         }
-                        else if (generateInputFieldNumber !== givenInputFieldNumber) {
-                            document.getElementById('pin-match-limition-note').style.display = 'block';
-                            givenInputField.value = ' ';
-                            let tryingNumber = document.getElementById('limit-number');
-                            tryingNumber.innerText = tryingNumber.innerText - 1;
-                            if (tryingNumber.innerText == '0') {
-                                generateInputField.value = ' ';
-                                givenInputField.value = ' ';
-                                document.getElementById('submit').style.display = 'none';
-                                document.getElementById('pin-match-limition-note').innerText = 'Please Reload page';
-                            }
-                            else{
-
-                            }
-                        }
-                        else {
-                            givenInputField.value = ' ';
+                        //if don't match input field
+                        else if (generatePin !== givenPin) {
+                            //showing notify note
                             document.getElementById('notify-success').style.display = 'none';
                             document.getElementById('notify-unsuccess').style.display = 'block';
+                            //clear input field
+                            givenInputPin.value = ' ';
+                            //pin match limit note show
+                            document.getElementById('pin-match-limit-note').style.display = 'block';
+                            //decrease limit number
+                            const limitNumber = document.getElementById('limit-number');
+                            limitNumber.innerText = limitNumber.innerText - 1;
+                            //if limit number is over
+                            if (limitNumber.innerText == 0) {
+                                document.getElementById('submit').style.display = 'none';
+                                generateInputPin.value = ' ';
+                                givenInputPin.value = ' ';
+                                document.getElementById('pin-match-limit-note').innerText = 'Please reload page'
+                            }
                         }
-                })
-            </script>
+                    }
+
+                }
+                //showing number in input field
+                else {
+                    let givenInputField = document.getElementById('given-number-input-field');
+                    givenInputField.value = givenInputField.value + digit;
+                }
+            })
+        </script>
 </body>
 
 </html>
